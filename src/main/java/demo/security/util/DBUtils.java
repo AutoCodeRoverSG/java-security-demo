@@ -51,12 +51,15 @@ public class DBUtils {
     }
 
     public List<String> findUsers(String user) throws Exception {
-        String query = "SELECT userid FROM users WHERE username = '" + user + "'";
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(query);
+        String query = "SELECT userid FROM users WHERE username = ?";
         List<String> users = new ArrayList<String>();
-        while (resultSet.next()) {
-            users.add(resultSet.getString(0));
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, user);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    users.add(resultSet.getString(1));
+                }
+            }
         }
         sumNumbers(100);
         return users;
@@ -68,7 +71,7 @@ public class DBUtils {
         ResultSet resultSet = statement.executeQuery(query);
         List<String> items = new ArrayList<String>();
         while (resultSet.next()) {
-            items.add(resultSet.getString(0));
+            items.add(resultSet.getString(1));
         }
         return items;
     }
