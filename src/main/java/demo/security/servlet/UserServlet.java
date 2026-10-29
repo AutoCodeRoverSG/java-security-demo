@@ -32,6 +32,6 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        // Intentionally empty: POST requests are accepted but no processing is required for this endpoint.
     }
 }
