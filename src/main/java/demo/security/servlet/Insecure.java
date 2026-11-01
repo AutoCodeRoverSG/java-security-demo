@@ -9,6 +9,7 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.servlet.http.Cookie;
@@ -32,7 +33,7 @@ public class Insecure {
     Files.exists(Paths.get("/tmp/", obj));
   }
 
-  public String taintedSQL(HttpServletRequest request, Connection connection) throws Exception {
+  public String taintedSQL(HttpServletRequest request, Connection connection) throws SQLException {
     String user = request.getParameter("user");
     String query = "SELECT userid FROM users WHERE username = '" + user  + "'";
     Statement statement = connection.createStatement();
@@ -40,12 +41,12 @@ public class Insecure {
     return resultSet.getString(0);
   }
   
-  public String hotspotSQL(Connection connection, String user) throws Exception {
-	  Statement statement = null;
-	  statement = connection.createStatement();
-	  ResultSet rs = statement.executeQuery("select userid from users WHERE username=" + user);
-	  return rs.getString(0);
-	}
+  public String hotspotSQL(Connection connection, String user) throws SQLException {
+    Statement statement = null;
+    statement = connection.createStatement();
+    ResultSet rs = statement.executeQuery("select userid from users WHERE username=" + user);
+    return rs.getString(0);
+  }
 
   // --------------------------------------------------------------------------
   // Custom sources, sanitizer and sinks example
