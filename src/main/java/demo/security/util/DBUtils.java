@@ -7,8 +7,12 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DBUtils {
+    private static final Logger LOGGER = Logger.getLogger(DBUtils.class.getName());
+
     Object value;
 
     Connection connection;
@@ -79,12 +83,6 @@ public class DBUtils {
             count = 0;
             for (int i = 2; i <= number / 2; i++) {
                 if (number % i == 0) {
-                    for (int m = 2; i <= number / 2; i++) {
-                        if (number % m == 0) {
-                            count++;
-                            break;
-                        }
-                    }
                     count++;
                     break;
                 }
@@ -93,7 +91,9 @@ public class DBUtils {
                 sum = sum + number;
             }
         }
-        System.out.println("The Sum of numbers is: " + sum);
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info("The Sum of numbers is: " + sum);
+        }
     }
 
     /**
